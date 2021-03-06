@@ -1,26 +1,34 @@
 package br.com.zup.edu.ligaqualidade.desafioemprestimoimobiliario.modifique;
 
+import br.com.zup.edu.ligaqualidade.desafioemprestimoimobiliario.modifique.dto.ProposalDTO;
+import br.com.zup.edu.ligaqualidade.desafioemprestimoimobiliario.modifique.reader.ProposalInputReader;
+import br.com.zup.edu.ligaqualidade.desafioemprestimoimobiliario.modifique.validators.ProposalValidator;
+import br.com.zup.edu.ligaqualidade.desafioemprestimoimobiliario.modifique.writer.ProposalOutputWriter;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.zup.edu.ligaqualidade.desafioemprestimoimobiliario.modifique.dto.GenericInstanceDTO;
-import br.com.zup.edu.ligaqualidade.desafioemprestimoimobiliario.modifique.factory.AddresserFactory;
-import br.com.zup.edu.ligaqualidade.desafioemprestimoimobiliario.modifique.factory.InstancesFactory;
-
 public class Solucao {
 
-	private static final InstancesFactory factory = new InstancesFactory();
+    private static final ProposalInputReader proposalInputReader = new ProposalInputReader();
 
-	private static final AddresserFactory addresser = new AddresserFactory();
-	
-	public static String processMessages(List<String> messages) {
+    private static final ProposalOutputWriter proposalOutputWriter = new ProposalOutputWriter();
 
-		List<GenericInstanceDTO> objects = new ArrayList<>();
+    private static final ProposalValidator PROPOSAL_VALIDATOR = new ProposalValidator();
 
-		messages.parallelStream().forEach(row -> objects.add(factory.create(row)));
+    public static String processMessages(List<String> rows) {
 
-		return addresser.addressAccordingEventSchema(objects);
-	}
+        List<ProposalDTO> proposals = proposalInputReader.read(rows);
 
+        List<ProposalDTO> proposalsValidate = new ArrayList<>();
 
+        for (ProposalDTO proposal : proposals) {
+            try {
+                proposalsValidate.add(PROPOSAL_VALIDATOR.validate(proposal));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return null;
+    }
 }
