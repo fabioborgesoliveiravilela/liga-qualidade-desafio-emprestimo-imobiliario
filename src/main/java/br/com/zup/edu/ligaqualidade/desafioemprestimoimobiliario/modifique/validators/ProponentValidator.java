@@ -29,13 +29,13 @@ public class ProponentValidator {
                     BigDecimal monthlyIncome = it.getMonthlyIncome();
                     Integer age = it.getAge();
 
-                    if (age >= 18 && age <= 24 && monthlyIncome.multiply(BigDecimal.valueOf(4)).compareTo(proposal.getInstallmentValue()) >= 1) {
+                    if (age >= 18 && age <= 24 && monthlyIncome.multiply(BigDecimal.valueOf(4)).compareTo(proposal.getInstallmentValue()) < 1) {
 
                         throw new IllegalArgumentException("A renda do proponente principal deve ser pelo menos 4 vezes o valor da parcela do empréstimo");
-                    } else if (age >= 25 && age <= 50 && monthlyIncome.multiply(BigDecimal.valueOf(3)).compareTo(proposal.getInstallmentValue()) >= 1) {
+                    } else if (age >= 25 && age <= 50 && monthlyIncome.multiply(BigDecimal.valueOf(3)).compareTo(proposal.getInstallmentValue()) < 1) {
 
                         throw new IllegalArgumentException("A renda do proponente principal deve ser pelo menos 3 vezes o valor da parcela do empréstimo");
-                    } else if (monthlyIncome.multiply(BigDecimal.valueOf(2)).compareTo(proposal.getInstallmentValue()) >= 1) {
+                    } else if (monthlyIncome.multiply(BigDecimal.valueOf(2)).compareTo(proposal.getInstallmentValue()) < 1) {
 
                         throw new IllegalArgumentException("A renda do proponente principal deve ser pelo menos 2 vezes o valor da parcela do empréstimo");
                     }
