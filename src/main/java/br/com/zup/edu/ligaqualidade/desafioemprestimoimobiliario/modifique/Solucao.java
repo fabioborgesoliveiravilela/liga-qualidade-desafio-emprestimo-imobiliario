@@ -20,15 +20,15 @@ public class Solucao {
 
         List<ProposalDTO> proposals = proposalInputReader.read(rows);
 
-        List<ProposalDTO> proposalsValidate = new ArrayList<>();
+        List<CharSequence> proposalsValidate = new ArrayList<>();
 
         for (ProposalDTO proposal : proposals) {
             try {
-                proposalsValidate.add(PROPOSAL_VALIDATOR.validate(proposal));
+                proposalsValidate.add(PROPOSAL_VALIDATOR.validate(proposal).getProposalId());
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
-        return null;
+        return String.join(",", proposalsValidate);
     }
 }
