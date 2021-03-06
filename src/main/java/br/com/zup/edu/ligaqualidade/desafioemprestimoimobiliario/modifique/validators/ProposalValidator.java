@@ -1,28 +1,31 @@
 package br.com.zup.edu.ligaqualidade.desafioemprestimoimobiliario.modifique.validators;
 
-import java.math.BigDecimal;
-
 import br.com.zup.edu.ligaqualidade.desafioemprestimoimobiliario.modifique.YearConverterUtil;
 import br.com.zup.edu.ligaqualidade.desafioemprestimoimobiliario.modifique.dto.ProposalDTO;
 
+import java.math.BigDecimal;
+
 public class ProposalValidator {
 
-	public String validate(ProposalDTO proposal) {
+    private final ProponentValidator proponentValidator = new ProponentValidator();
+    private final WarrantyValidator warrantyValidator = new WarrantyValidator();
 
-		if (hasLoanValueRangeValid(proposal) && hasYearRangeValid(proposal)) {
-			return proposal.getProposalId();
-		}
+    public ProposalDTO validate(ProposalDTO proposal) {
 
-		return "";
-	}
+        if (proposal.getLoanValue().compareTo(BigDecimal.valueOf(30000L)) == -1 ||
+                proposal.getLoanValue().compareTo(BigDecimal.valueOf(3000000L)) == 1) {
+            throw new IllegalArgumentException("O valor do empréstimo deve estar entre R$ 30.000,00 e R$ 3.000.000,00");
+        }
 
-	private boolean hasYearRangeValid(ProposalDTO proposal) {
-		return proposal.getNumberMonthlyInst() >= YearConverterUtil.convertYearToMonth(2)
-				&& proposal.getNumberMonthlyInst() <= YearConverterUtil.convertYearToMonth(15);
-	}
+        if (proposal.getNumberMonthlyInst() < YearConverterUtil.convertYearToMonth(2)
+                && proposal.getNumberMonthlyInst() > YearConverterUtil.convertYearToMonth(15)) {
+            throw new IllegalArgumentException("O empréstimo deve ser pago em no mínimo 2 anos e no máximo 15 anos");
+        }
 
-	private boolean hasLoanValueRangeValid(ProposalDTO proposal) {
-		return proposal.getLoanValue().compareTo(BigDecimal.valueOf(30000)) > 0
-				&& proposal.getLoanValue().compareTo(BigDecimal.valueOf(3000000)) > 0;
-	}
+        proponentValidator.validate(proposal);
+
+        warrantyValidator.validate(proposal);
+
+        return proposal;
+    }
 }
