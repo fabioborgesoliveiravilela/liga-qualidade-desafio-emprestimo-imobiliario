@@ -14,10 +14,6 @@ public class ProponentDTO extends GenericInstanceDTO {
 
 	private boolean isMain;
 
-	public ProponentDTO() {
-		super();
-	}
-
 	public ProponentDTO(String eventId, String eventSchema, String eventAction, //
 			String eventTime, String proposalId, //
 			String id, String name, int age, BigDecimal monthlyIncome, boolean isMain) {
